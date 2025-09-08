@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecurity Quiz - Infinity Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #00d4ff;
+            --secondary-color: #00ff88;
+            --danger-color: #ff0066;
+            --warning-color: #ffcc00;
+            --info-color: #6600ff;
+            --dark-bg: #0a0a0a;
+            --dark-card: #1a1a1a;
+            --dark-border: #333;
+            --light-bg: #f0f5ff;
+            --light-card: #ffffff;
+            --light-border: #e0e6ff;
+            --blue-team-color: #0066ff;
+            --red-team-color: #ff3333;
+            --grc-team-color: #ffcc00;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: var(--dark-bg);
+            --text-color: #e0e0ff;
+            --card-bg: var(--dark-card);
+            --border-color: var(--dark-border);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+        }
+
+        [data-theme="light"] {
+            --bg-color: var(--light-bg);
+            --text-color: #1a1a2e;
+            --card-bg: var(--light-card);
+            --border-color: var(--light-border);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            --neon-glow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: var(--neon-glow);
+            animation: logo-pulse 2s ease-in-out infinite;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: var(--gradient-1);
+            width: 0%;
+            animation: loading-progress 3s ease-in-out;
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes loading-progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            animation: loading-text-fade 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading-text-fade {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Auth Pages */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-subtitle {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .auth-form {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--neon-glow);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            background: var(--gradient-1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .auth-link:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Team Selection */
+        .team-selection {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .team-selection h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .team-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .team-btn {
+            padding: 1.5rem 2rem;
+            border: 3px solid;
+            border-radius: 15px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .team-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .team-btn.blue-team {
+            border-color: var(--blue-team-color);
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 102, 255, 0.2) 100%);
+        }
+
+        .team-btn.blue-team:hover {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2) 0%, rgba(0, 102, 255, 0.3) 100%);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+        }
+
+        .team-btn.red-team {
+            border-color: var(--red-team-color);
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.1) 0%, rgba(255, 51, 51, 0.2) 100%);
+        }
+
+        .team-btn.red-team:hover {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.2) 0%, rgba(255, 51, 51, 0.3) 100%);
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+        }
+
+        .team-btn.grc-team {
+            border-color: var(--grc-team-color);
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.1) 0%, rgba(255, 204, 0, 0.2) 100%);
+        }
+
+        .team-btn.grc-team:hover {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.2) 0%, rgba(255, 204, 0, 0.3) 100%);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+        }
+
+        .team-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .team-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: particle-float 15s infinite linear;
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .main-header {
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: var(--neon-glow);
+            animation: title-pulse 2s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes title-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .difficulty-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .difficulty-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .difficulty-btn:hover::before,
+        .difficulty-btn.active::before {
+            left: 0;
+        }
+
+        .difficulty-btn:hover,
+        .difficulty-btn.active {
+            color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Quiz Section */
+        .level-indicator {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .level-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: var(--neon-glow);
+            margin-bottom: 1rem;
+        }
+
+        .team-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .team-info.blue-team {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2) 0%, rgba(0, 102, 255, 0.1) 100%);
+            border: 2px solid var(--blue-team-color);
+            color: var(--blue-team-color);
+        }
+
+        .team-info.red-team {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.2) 0%, rgba(255, 51, 51, 0.1) 100%);
+            border: 2px solid var(--red-team-color);
+            color: var(--red-team-color);
+        }
+
+        .team-info.grc-team {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.2) 0%, rgba(255, 204, 0, 0.1) 100%);
+            border: 2px solid var(--grc-team-color);
+            color: var(--grc-team-color);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: var(--neon-glow);
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--neon-glow);
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #0a0a0a;
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, #ff0066 0%, #cc0052 100%);
+            color: white;
+        }
+
+        .next-btn {
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            background: var(--gradient-2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            background: var(--gradient-1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: white;
+            color: var(--dark-bg);
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .difficulty-selector {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .team-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-logo">CYBER QUIZ</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="loading-text">Loading Infinity Challenge...</div>
+    </div>
+
+    <!-- Auth Pages -->
+    <div id="authPage" class="auth-page">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1 class="auth-title">CYBER QUIZ</h1>
+                <p class="auth-subtitle">Master the Cyber Realm</p>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginAuthForm" class="auth-form">
+                <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Login</h2>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="loginUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                <button type="button" class="auth-btn" onclick="handleLogin()">LOGIN</button>
+                <div class="auth-link" onclick="showRegisterForm()">
+                    Don't have an account? Register here
+                </div>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerAuthForm" class="auth-form hidden">
+                <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Register</h2>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="registerUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="registerEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="registerPassword" class="form-control" required>
+                </div>
+                <button type="button" class="auth-btn" onclick="handleRegister()">REGISTER</button>
+                <div class="auth-link" onclick="showLoginForm()">
+                    Already have an account? Login here
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Selection Page -->
+    <div id="teamSelectionPage" class="auth-page hidden">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1 class="auth-title">CHOOSE YOUR TEAM</h1>
+                <p class="auth-subtitle">Select your cyber security specialization</p>
+            </div>
+            
+            <div class="team-selection">
+                <div class="team-buttons">
+                    <button class="team-btn blue-team" onclick="selectTeam('blue_team')">
+                        <span class="team-icon">🛡️</span>
+                        <div class="team-name">BLUE TEAM</div>
+                        <div class="team-description">Defense & Security</div>
+                    </button>
+                    
+                    <button class="team-btn red-team" onclick="selectTeam('red_team')">
+                        <span class="team-icon">⚔️</span>
+                        <div class="team-name">RED TEAM</div>
+                        <div class="team-description">Offense & Testing</div>
+                    </button>
+                    
+                    <button class="team-btn grc-team" onclick="selectTeam('grc')">
+                        <span class="team-icon">📋</span>
+                        <div class="team-name">GRC TEAM</div>
+                        <div class="team-description">Governance & Compliance</div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="auth-link" onclick="logout()">
+                Back to Login
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Container -->
+    <div id="mainGame" class="hidden">
+        <!-- Animated Background -->
+        <div class="bg-animation">
+            <div class="cyber-grid"></div>
+            <div class="particles" id="particles"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="main-header">
+            <h1 class="main-title float-animation">CYBERSECURITY QUIZ</h1>
+            <p class="subtitle glow-animation">Infinity Challenge - Master the Cyber Realm</p>
+            
+            <!-- Controls -->
+            <div class="controls">
+                <div class="control-group">
+                    <label>Difficulty:</label>
+                    <div class="difficulty-selector">
+                        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                        <button class="difficulty-btn" data-difficulty="pro">Pro</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <select id="languageSelector" class="form-control">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                    <button id="themeToggle" class="btn btn-outline-light">🌙 Dark Mode</button>
+                    <button id="logoutBtn" class="btn btn-outline-danger">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Game Container -->
+        <div class="game-container">
+            <!-- Quiz Section -->
+            <div id="quizSection">
+                <!-- Team Info -->
+                <div id="teamInfo" class="team-info">
+                    <span id="teamNameDisplay"></span>
+                </div>
+
+                <!-- Level Indicator -->
+                <div class="level-indicator">
+                    <div class="level-display">
+                        LEVEL <span id="currentLevel">1</span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value" id="currentScore">0</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="streakCount">0</div>
+                        <div class="stat-label">Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="accuracyPercent">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="questionsAnswered">0</div>
+                        <div class="stat-label">Answered</div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">
+                            Question #<span id="questionNumber">1</span>
+                        </span>
+                        <span id="domainBadge" class="domain-badge">Blue Team</span>
+                    </div>
+                    
+                    <div id="questionText" class="question-text">
+                        Loading cyber question...
+                    </div>
+                    
+                    <div id="answerSection" class="answer-section">
+                        <input type="text" id="answerInput" class="answer-input" placeholder="______">
+                        <button id="submitAnswer" class="submit-btn">SUBMIT ANSWER</button>
+                    </div>
+                    
+                    <div id="feedback" class="feedback hidden"></div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="loading hidden">
+                    <div class="loading-spinner"></div>
+                    <p>Loading next question...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Internationalization
+        const translations = {
+            fr: {
+                "subtitle": "Défi Infini - Maîtrisez le Royaume Cyber",
+                "difficulty.easy": "Facile",
+                "difficulty.medium": "Moyen",
+                "difficulty.hard": "Difficile",
+                "difficulty.pro": "Pro",
+                "theme.dark": "🌙 Mode Sombre",
+                "theme.light": "☀️ Mode Clair",
+                "loginTabText": "Connexion",
+                "registerTabText": "Inscription",
+                "loginUsernameLabel": "Nom d'utilisateur",
+                "loginPasswordLabel": "Mot de passe",
+                "loginBtnText": "SE CONNECTER",
+                "registerUsernameLabel": "Nom d'utilisateur",
+                "registerEmailLabel": "Email",
+                "registerPasswordLabel": "Mot de passe",
+                "registerBtnText": "S'INSCRIRE",
+                "levelPrefix": "NIVEAU",
+                "scoreLabel": "Score",
+                "streakLabel": "Série",
+                "accuracyLabel": "Précision",
+                "logoutText": "Déconnexion",
+                "questionNumberText": "Question",
+                "submitText": "VALIDER LA RÉPONSE",
+                "loadingText": "Chargement de la prochaine question...",
+                "feedback.correct": "EXCELLENT ! Réponse correcte !",
+                "feedback.incorrect": "FAUX. La bonne réponse était : ",
+                "nextText": "QUESTION SUIVANTE",
+                "domain.blue_team": "Blue Team",
+                "domain.red_team": "Red Team",
+                "domain.grc": "GRC",
+                "difficultyChanged": "Difficulté changée en "
+            },
+            en: {
+                "subtitle": "Infinity Challenge - Master the Cyber Realm",
+                "difficulty.easy": "Easy",
+                "difficulty.medium": "Medium",
+                "difficulty.hard": "Hard",
+                "difficulty.pro": "Pro",
+                "theme.dark": "🌙 Dark Mode",
+                "theme.light": "☀️ Light Mode",
+                "loginTabText": "Login",
+                "registerTabText": "Register",
+                "loginUsernameLabel": "Username",
+                "loginPasswordLabel": "Password",
+                "loginBtnText": "LOGIN",
+                "registerUsernameLabel": "Username",
+                "registerEmailLabel": "Email",
+                "registerPasswordLabel": "Password",
+                "registerBtnText": "REGISTER",
+                "levelPrefix": "LEVEL",
+                "scoreLabel": "Score",
+                "streakLabel": "Streak",
+                "accuracyLabel": "Accuracy",
+                "logoutText": "Logout",
+                "questionNumberText": "Question",
+                "submitText": "SUBMIT ANSWER",
+                "loadingText": "Loading next question...",
+                "feedback.correct": "EXCELLENT! Correct answer!",
+                "feedback.incorrect": "WRONG. The correct answer was: ",
+                "nextText": "NEXT QUESTION",
+                "domain.blue_team": "Blue Team",
+                "domain.red_team": "Red Team",
+                "domain.grc": "GRC",
+                "difficultyChanged": "Difficulty changed to "
+            }
+        };
+
+        // Question Database - Isolated by team
+        const questionDatabase = {
+            blue_team: {
+                easy: {
+                    fr: [
+                        { text: "Un _____ est utilisé pour filtrer le trafic réseau entre les zones de confiance et non confiance.", answer: "pare-feu" },
+                        { text: "Le _____ est le processus d'identification et de vérification d'un utilisateur.", answer: "authentification" },
+                        { text: "Une attaque _____ implique d'essayer plusieurs mots de passe pour obtenir l'accès.", answer: "force brute" }
+                    ],
+                    en: [
+                        { text: "A _____ is used to filter network traffic between trusted and untrusted zones.", answer: "firewall" },
+                        { text: "_____ is the process of identifying and verifying a user.", answer: "authentication" },
+                        { text: "A _____ attack involves trying many passwords to gain access.", answer: "brute force" }
+                    ]
+                },
+                medium: {
+                    fr: [
+                        { text: "Un système _____ détecte et prévient les intrusions en temps réel.", answer: "IDS/IPS" },
+                        { text: "_____ est un protocole pour une communication sécurisée sur les réseaux.", answer: "TLS" }
+                    ],
+                    en: [
+                        { text: "An _____ system detects and prevents intrusions in real-time.", answer: "IDS/IPS" },
+                        { text: "_____ is a protocol for secure communication over networks.", answer: "TLS" }
+                    ]
+                },
+                hard: {
+                    fr: [
+                        { text: "Un IDS basé sur _____ utilise des modèles d'attaque connus pour détecter les menaces.", answer: "signature" }
+                    ],
+                    en: [
+                        { text: "A _____-based IDS uses known attack patterns to detect threats.", answer: "signature" }
+                    ]
+                },
+                pro: {
+                    fr: [
+                        { text: "_____ détecte les menaces persistantes avancées en utilisant l'analyse comportementale.", answer: "UEBA" }
+                    ],
+                    en: [
+                        { text: "_____ detects advanced persistent threats using behavioral analysis.", answer: "UEBA" }
+                    ]
+                }
+            },
+            red_team: {
+                easy: {
+                    fr: [
+                        { text: "Le phishing est une technique pour tromper les utilisateurs afin de révéler des informations sensibles.", answer: "phishing" },
+                        { text: "Un _____ shell permet un accès distant à un système compromis.", answer: "reverse" }
+                    ],
+                    en: [
+                        { text: "Phishing is a technique to trick users into revealing sensitive information.", answer: "phishing" },
+                        { text: "A _____ shell allows remote access to a compromised system.", answer: "reverse" }
+                    ]
+                },
+                medium: {
+                    fr: [
+                        { text: "Un exploit _____ cible une vulnérabilité avant qu'elle ne soit corrigée.", answer: "zero-day" },
+                        { text: "_____ est un outil d'analyse de paquets réseau.", answer: "Wireshark" }
+                    ],
+                    en: [
+                        { text: "A _____ exploit targets a vulnerability before it's patched.", answer: "zero-day" },
+                        { text: "_____ is a tool for network packet analysis.", answer: "Wireshark" }
+                    ]
+                },
+                hard: {
+                    fr: [
+                        { text: "_____ est une technique pour exécuter du code dans la mémoire d'un autre processus.", answer: "injection de processus" }
+                    ],
+                    en: [
+                        { text: "_____ is a technique to execute code in another process's memory.", answer: "process injection" }
+                    ]
+                },
+                pro: {
+                    fr: [
+                        { text: "_____ est une technique pour contourner les protections du mode noyau.", answer: "exploitation du noyau" }
+                    ],
+                    en: [
+                        { text: "_____ is a technique to bypass kernel-mode protections.", answer: "kernel exploitation" }
+                    ]
+                }
+            },
+            grc: {
+                easy: {
+                    fr: [
+                        { text: "GRC signifie Gouvernance, Risque et _____.", answer: "Conformité" },
+                        { text: "Le _____ est un règlement européen sur la protection des données personnelles.", answer: "RGPD" }
+                    ],
+                    en: [
+                        { text: "GRC stands for Governance, Risk, and _____.", answer: "Compliance" },
+                        { text: "The _____ is a European data protection regulation.", answer: "GDPR" }
+                    ]
+                },
+                medium: {
+                    fr: [
+                        { text: "ISO 27001 est une norme internationale de gestion de la _____.", answer: "sécurité" },
+                        { text: "Une _____ évalue les menaces potentielles.", answer: "analyse de risques" }
+                    ],
+                    en: [
+                        { text: "ISO 27001 is an international standard for information security _____.", answer: "management" },
+                        { text: "A _____ assesses potential threats.", answer: "risk assessment" }
+                    ]
+                },
+                hard: {
+                    fr: [
+                        { text: "_____ est un framework pour la gestion des risques liés à la sécurité de l'information.", answer: "ISO 27005" }
+                    ],
+                    en: [
+                        { text: "_____ is a framework for information security risk management.", answer: "ISO 27005" }
+                    ]
+                },
+                pro: {
+                    fr: [
+                        { text: "_____ est une méthode pour quantifier le risque cybernétique en termes financiers.", answer: "FAIR" }
+                    ],
+                    en: [
+                        { text: "_____ is a method for quantifying cyber risk in financial terms.", answer: "FAIR" }
+                    ]
+                }
+            }
+        };
+
+        // Global variables
+        let currentUser = null;
+        let currentLevel = 1;
+        let currentScore = 0;
+        let currentQuestion = null;
+        let answeredCount = 0;
+        let correctCount = 0;
+        let streak = 0;
+        let difficulty = 'easy';
+        let currentLanguage = 'en';
+        let selectedTeam = null;
+        let answeredQuestions = [];
+        let i18n = null;
+        let themeManager = null;
+
+        // Loading screen functions
+        function hideLoadingScreen() {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 3000);
+        }
+
+        // Internationalization
+        class I18nManager {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('language') || 'en';
+                currentLanguage = this.currentLanguage;
+                this.init();
+            }
+
+            init() {
+                this.updateDirection();
+                this.translatePage();
+                const languageSelector = document.getElementById('languageSelector');
+                if (languageSelector) {
+                    languageSelector.value = this.currentLanguage;
+                    languageSelector.addEventListener('change', (e) => {
+                        this.setLanguage(e.target.value);
+                    });
+                }
+            }
+
+            setLanguage(lang) {
+                this.currentLanguage = lang;
+                currentLanguage = lang;
+                localStorage.setItem('language', lang);
+                this.updateDirection();
+                this.translatePage();
+                updateUI();
+                // Reload question in new language
+                if (selectedTeam && document.getElementById('mainGame').classList.contains('hidden') === false) {
+                    loadQuestion();
+                }
+            }
+
+            updateDirection() {
+                const direction = this.currentLanguage === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.setAttribute('dir', direction);
+            }
+
+            translatePage() {
+                const elements = {
+                    'subtitle': 'subtitle',
+                    'themeText': document.documentElement.getAttribute('data-theme') === 'dark' ? 'theme.light' : 'theme.dark'
+                };
+
+                for (const [id, key] of Object.entries(elements)) {
+                    const element = document.getElementById(id);
+                    if (element && translations[this.currentLanguage][key]) {
+                        element.textContent = translations[this.currentLanguage][key];
+                    }
+                }
+
+                // Update team display
+                if (selectedTeam) {
+                    const teamDisplay = document.getElementById('teamNameDisplay');
+                    if (teamDisplay) {
+                        teamDisplay.textContent = this.t(`domain.${selectedTeam}`);
+                    }
+                }
+
+                // Update language selector
+                const languageSelector = document.getElementById('languageSelector');
+                if (languageSelector) {
+                    const options = languageSelector.options;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = options[i];
+                        switch(option.value) {
+                            case 'fr':
+                                option.textContent = this.currentLanguage === 'fr' ? 'Français' : 'French';
+                                break;
+                            case 'en':
+                                option.textContent = this.currentLanguage === 'en' ? 'English' : 'English';
+                                break;
+                            case 'es':
+                                option.textContent = this.currentLanguage === 'es' ? 'Español' : 'Spanish';
+                                break;
+                            case 'ar':
+                                option.textContent = this.currentLanguage === 'ar' ? 'العربية' : 'Arabic';
+                                break;
+                        }
+                    }
+                }
+            }
+
+            t(key) {
+                return translations[this.currentLanguage]?.[key] || translations['en']?.[key] || key;
+            }
+        }
+
+        // Theme Manager
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('theme') || 'dark';
+                this.init();
+            }
+
+            init() {
+                this.applyTheme();
+                this.createParticles();
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', () => {
+                        this.toggleTheme();
+                    });
+                }
+            }
+
+            toggleTheme() {
+                this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', this.currentTheme);
+                this.applyTheme();
+            }
+
+            applyTheme() {
+                document.documentElement.setAttribute('data-theme', this.currentTheme);
+                if (i18n) {
+                    const themeText = this.currentTheme === 'light' ? 'theme.dark' : 'theme.light';
+                    const themeToggle = document.getElementById('themeToggle');
+                    if (themeToggle) {
+                        themeToggle.textContent = i18n.t(themeText);
+                    }
+                }
+            }
+
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                if (particlesContainer) {
+                    for (let i = 0; i < 50; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.animationDelay = Math.random() * 15 + 's';
+                        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                        particlesContainer.appendChild(particle);
+                    }
+                }
+            }
+        }
+
+        // Auth Functions
+        function showLoginForm() {
+            document.getElementById('loginAuthForm').classList.remove('hidden');
+            document.getElementById('registerAuthForm').classList.add('hidden');
+        }
+
+        function showRegisterForm() {
+            document.getElementById('loginAuthForm').classList.add('hidden');
+            document.getElementById('registerAuthForm').classList.remove('hidden');
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showTeamSelection();
+            } else {
+                alert('Invalid credentials');
+            }
+        }
+
+        function handleRegister() {
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            if (users.find(u => u.username === username)) {
+                alert('Username already exists');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                username,
+                email,
+                password,
+                createdAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            alert('Registration successful! Please login.');
+            showLoginForm();
+        }
+
+        function showAuth() {
+            document.getElementById('authPage').classList.remove('hidden');
+            document.getElementById('teamSelectionPage').classList.add('hidden');
+            document.getElementById('mainGame').classList.add('hidden');
+        }
+
+        function showTeamSelection() {
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('teamSelectionPage').classList.remove('hidden');
+            document.getElementById('mainGame').classList.add('hidden');
+        }
+
+        function showMainGame() {
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('teamSelectionPage').classList.add('hidden');
+            document.getElementById('mainGame').classList.remove('hidden');
+            initQuiz();
+        }
+
+        function selectTeam(team) {
+            selectedTeam = team;
+            
+            // Update team info display
+            const teamInfo = document.getElementById('teamInfo');
+            if (teamInfo) {
+                teamInfo.className = `team-info ${team}`;
+                const teamDisplay = document.getElementById('teamNameDisplay');
+                if (teamDisplay && i18n) {
+                    teamDisplay.textContent = i18n.t(`domain.${team}`);
+                }
+            }
+            
+            showMainGame();
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedTeam = null;
+            localStorage.removeItem('currentUser');
+            showAuth();
+        }
+
+        // Question Functions - Isolated by team
+        function getQuestionByLevelAndLanguage(level, lang, team) {
+            let targetDifficulty = 'easy';
+            
+            // Déterminer la difficulté selon le niveau
+            if (level <= 10) targetDifficulty = 'easy';
+            else if (level <= 25) targetDifficulty = 'medium';
+            else if (level <= 50) targetDifficulty = 'hard';
+            else targetDifficulty = 'pro';
+
+            // Changer la difficulté si nécessaire
+            if (targetDifficulty !== difficulty) {
+                difficulty = targetDifficulty;
+                const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+                difficultyButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                const activeBtn = document.querySelector(`[data-difficulty="${difficulty}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            }
+
+            // Obtenir une question spécifique à l'équipe et à la langue
+            const teamQuestions = questionDatabase[team];
+            if (!teamQuestions || !teamQuestions[difficulty] || !teamQuestions[difficulty][lang]) {
+                console.error(`No questions found for team ${team}, difficulty ${difficulty}, language ${lang}`);
+                return null;
+            }
+            
+            const questions = teamQuestions[difficulty][lang];
+            
+            // Filtrer les questions non répondues
+            const availableQuestions = questions.filter(q => 
+                !answeredQuestions.some(aq => 
+                    aq.text === q.text && 
+                    aq.difficulty === difficulty && 
+                    aq.language === lang && 
+                    aq.team === team
+                )
+            );
+
+            // Si toutes les questions ont été utilisées, réinitialiser pour cette équipe/difficulté/langue
+            if (availableQuestions.length === 0) {
+                answeredQuestions = answeredQuestions.filter(aq => 
+                    !(aq.difficulty === difficulty && 
+                      aq.language === lang && 
+                      aq.team === team)
+                );
+                return questions[Math.floor(Math.random() * questions.length)];
+            }
+
+            return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+        }
+
+        function loadQuestion() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                currentQuestion = getQuestionByLevelAndLanguage(currentLevel, currentLanguage, selectedTeam);
+                
+                if (!currentQuestion) {
+                    alert('No questions available for this configuration');
+                    showLoading(false);
+                    return;
+                }
+                
+                displayQuestion(currentQuestion);
+                showLoading(false);
+            }, 800);
+        }
+
+        function displayQuestion(question) {
+            const questionText = document.getElementById('questionText');
+            const answerInput = document.getElementById('answerInput');
+            const questionNumber = document.getElementById('questionNumber');
+            const domainBadge = document.getElementById('domainBadge');
+            
+            if (questionText) questionText.textContent = question.text;
+            if (answerInput) {
+                answerInput.value = '';
+                answerInput.focus();
+            }
+            if (questionNumber) questionNumber.textContent = answeredCount + 1;
+            
+            // Update domain badge based on team
+            if (domainBadge && i18n) {
+                domainBadge.textContent = i18n.t(`domain.${selectedTeam}`);
+                domainBadge.className = `domain-badge domain-${selectedTeam}`;
+            }
+            
+            // Hide feedback
+            const feedback = document.getElementById('feedback');
+            if (feedback) feedback.classList.add('hidden');
+            
+            const submitBtn = document.getElementById('submitAnswer');
+            if (submitBtn) submitBtn.classList.remove('hidden');
+        }
+
+        function submitAnswer() {
+            const answerInput = document.getElementById('answerInput');
+            if (!answerInput) return;
+            
+            const answer = answerInput.value.trim();
+            
+            if (!answer) {
+                alert('Please provide an answer');
+                return;
+            }
+
+            const isCorrect = answer.toLowerCase() === currentQuestion.answer.toLowerCase();
+            
+            // Save answered question with team info
+            answeredQuestions.push({
+                text: currentQuestion.text,
+                difficulty: difficulty,
+                language: currentLanguage,
+                team: selectedTeam,
+                answeredAt: new Date().toISOString()
+            });
+            localStorage.setItem('answeredQuestions', JSON.stringify(answeredQuestions));
+
+            answeredCount++;
+            
+            if (isCorrect) {
+                correctCount++;
+                streak++;
+                currentScore += getScoreForDifficulty();
+                currentLevel++;
+            } else {
+                streak = 0;
+            }
+
+            showFeedback(isCorrect);
+            updateUI();
+        }
+
+        function getScoreForDifficulty() {
+            const scores = { easy: 10, medium: 25, hard: 50, pro: 100 };
+            return scores[difficulty] * (1 + streak * 0.1);
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.getElementById('feedback');
+            const submitBtn = document.getElementById('submitAnswer');
+            
+            if (!feedback || !i18n) return;
+            
+            if (isCorrect) {
+                feedback.innerHTML = `<div class="feedback correct">${i18n.t('feedback.correct')}</div>`;
+            } else {
+                feedback.innerHTML = `<div class="feedback incorrect">${i18n.t('feedback.incorrect')}${currentQuestion.answer}</div>`;
+            }
+            
+            feedback.classList.remove('hidden');
+            if (submitBtn) submitBtn.classList.add('hidden');
+            
+            // Add next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'next-btn';
+            nextBtn.innerHTML = i18n.t('nextText');
+            nextBtn.onclick = () => {
+                feedback.innerHTML = '';
+                feedback.classList.add('hidden');
+                loadQuestion();
+            };
+            feedback.appendChild(nextBtn);
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const questionCard = document.querySelector('.question-card');
+            
+            if (loading && questionCard) {
+                if (show) {
+                    loading.classList.remove('hidden');
+                    questionCard.classList.add('hidden');
+                } else {
+                    loading.classList.add('hidden');
+                    questionCard.classList.remove('hidden');
+                }
+            }
+        }
+
+        function updateUI() {
+            const currentLevelEl = document.getElementById('currentLevel');
+            const currentScoreEl = document.getElementById('currentScore');
+            const streakCountEl = document.getElementById('streakCount');
+            const accuracyPercentEl = document.getElementById('accuracyPercent');
+            const questionsAnsweredEl = document.getElementById('questionsAnswered');
+            
+            if (currentLevelEl) currentLevelEl.textContent = currentLevel;
+            if (currentScoreEl) currentScoreEl.textContent = Math.floor(currentScore);
+            if (streakCountEl) streakCountEl.textContent = streak;
+            if (questionsAnsweredEl) questionsAnsweredEl.textContent = answeredCount;
+            
+            const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+            if (accuracyPercentEl) accuracyPercentEl.textContent = accuracy + '%';
+        }
+
+        function changeDifficulty(newDifficulty) {
+            difficulty = newDifficulty;
+            answeredQuestions = [];
+            localStorage.setItem('answeredQuestions', JSON.stringify(answeredQuestions));
+            
+            // Update UI
+            const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+            difficultyButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.querySelector(`[data-difficulty="${difficulty}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            if (i18n) {
+                alert(i18n.t('difficultyChanged') + newDifficulty);
+            }
+            loadQuestion();
+        }
+
+        function initQuiz() {
+            // Load saved data
+            const savedAnsweredQuestions = localStorage.getItem('answeredQuestions');
+            if (savedAnsweredQuestions) {
+                answeredQuestions = JSON.parse(savedAnsweredQuestions);
+            }
+
+            // Bind events
+            const submitBtn = document.getElementById('submitAnswer');
+            const answerInput = document.getElementById('answerInput');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const languageSelector = document.getElementById('languageSelector');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (submitBtn) submitBtn.addEventListener('click', submitAnswer);
+            if (answerInput) {
+                answerInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitAnswer();
+                    }
+                });
+            }
+            if (logoutBtn) logoutBtn.addEventListener('click', logout);
+            if (languageSelector) {
+                languageSelector.addEventListener('change', (e) => {
+                    if (i18n) {
+                        i18n.setLanguage(e.target.value);
+                    }
+                });
+            }
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    if (themeManager) {
+                        themeManager.toggleTheme();
+                    }
+                });
+            }
+
+            // Difficulty buttons
+            const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+            difficultyButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    changeDifficulty(btn.getAttribute('data-difficulty'));
+                });
+            });
+
+            // Set active difficulty
+            const activeDifficultyBtn = document.querySelector(`[data-difficulty="${difficulty}"]`);
+            if (activeDifficultyBtn) {
+                activeDifficultyBtn.classList.add('active');
+            }
+
+            // Load first question
+            loadQuestion();
+            updateUI();
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show loading screen
+            hideLoadingScreen();
+            
+            // Initialize managers
+            i18n = new I18nManager();
+            themeManager = new ThemeManager();
+
+            // Check if user is logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showTeamSelection();
+            } else {
+                showAuth();
+            }
+        });
+    </script>
+</body>
+</html>
